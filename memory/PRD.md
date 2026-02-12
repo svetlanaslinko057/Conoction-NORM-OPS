@@ -125,14 +125,40 @@ CONNECTIONS_MODULE_ENABLED=true
 ---
 
 ## P0 (Next Steps):
-1. Добавить больше Twitter cookies для масштабного парсинга
-2. Настроить автоматический парсинг по расписанию
-3. Добавить time series data для графиков
+1. Исправить импортные нарушения (46 файлов) перед merge
+2. Создать недостающие порты (ITwitterLivePort, IAlertPort)
+3. Добавить PREFIX для ENV переменных
 
 ## P1 (Backlog):
 1. Telegram bot интеграция
-2. WebSocket real-time updates
+2. WebSocket real-time updates  
 3. Infinite scroll для списков
+4. Добавить больше Twitter cookies для масштабного парсинга
+
+---
+
+## Merge Preparation Documentation
+
+Created `/docs/modules/connections/`:
+
+| Document | Purpose |
+|----------|---------|
+| SYSTEM_SCOPE.md | Module boundaries and responsibilities |
+| ARCHITECTURE_DIAGRAM.md | Visual architecture |
+| DATA_CONTRACTS.md | API contracts (FROZEN) |
+| COLLECTIONS.md | MongoDB collections (40+) |
+| PORTS_INTERFACE.md | Port definitions |
+| FREEZE_V3.md | Frozen components list |
+| MERGE_CHECKLIST.md | Pre-merge verification |
+
+### Import Violations Found:
+- twitter-live: 11 files
+- alerts: 19 files
+- core/notifications: 4 files
+- taxonomy: 11 files
+- confidence: 1 file
+
+**Resolution:** Create port interfaces before merge
 
 ---
 
