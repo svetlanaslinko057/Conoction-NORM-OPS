@@ -19,6 +19,7 @@ import {
   getTierLabel,
   getTierColor,
 } from '../core/smart-followers/index.js';
+import { getMongoDb } from '../../../db/mongoose.js';
 
 export async function registerSmartFollowersRoutes(app: FastifyInstance): Promise<void> {
   
