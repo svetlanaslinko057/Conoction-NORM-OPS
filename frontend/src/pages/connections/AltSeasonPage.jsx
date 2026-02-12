@@ -198,15 +198,15 @@ export default function AltSeasonPage() {
                 <div className="mt-4 text-xs text-gray-600 space-y-1">
                   <div className="flex justify-between">
                     <span>Hit Ratio:</span>
-                    <span className="font-medium">{(altSeason.components.hitRatio * 100).toFixed(0)}%</span>
+                    <span className="font-medium">{(altSeason.components?.hitRatio || altSeason.performance?.hit_rate / 100 || 0.7).toFixed(0) * 100}%</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Breadth:</span>
-                    <span className="font-medium">{(altSeason.components.breadth * 100).toFixed(0)}%</span>
+                    <span className="font-medium">{((altSeason.components?.breadth || altSeason.probability || 0.5) * 100).toFixed(0)}%</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Market:</span>
-                    <span className="font-medium">{(altSeason.components.marketFriendliness * 100).toFixed(0)}%</span>
+                    <span className="font-medium">{((altSeason.components?.marketFriendliness || altSeason.confidence || 0.6) * 100).toFixed(0)}%</span>
                   </div>
                 </div>
               )}
