@@ -65,8 +65,11 @@ const MARKET_TAG_COLORS = {
 
 const ALT_SEASON_COLORS = {
   ALT_SEASON: { bg: 'bg-green-50', text: 'text-green-700', icon: IconAltSeason },
+  EARLY_ALT: { bg: 'bg-emerald-50', text: 'text-emerald-700', icon: IconAltSeason },
   PRE_ALT: { bg: 'bg-yellow-50', text: 'text-yellow-700', icon: IconSpikePump },
   NEUTRAL: { bg: 'bg-gray-50', text: 'text-gray-700', icon: Minus },
+  ROTATION: { bg: 'bg-purple-50', text: 'text-purple-700', icon: IconSpikePump },
+  BTC_SEASON: { bg: 'bg-orange-50', text: 'text-orange-700', icon: IconNetwork },
   BTC_ONLY: { bg: 'bg-blue-50', text: 'text-blue-700', icon: IconNetwork },
 };
 
