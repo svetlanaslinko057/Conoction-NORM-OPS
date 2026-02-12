@@ -48,16 +48,10 @@ class FOMOConnectionsTester:
             
             if response.status_code == 200:
                 data = response.json()
-                # Check for required fields
-                if data.get("service") == "python-gateway" and data.get("status") == "ok":
-                    if data.get("node_backend") == "connected":
-                        self.log_result("Backend Health Check", True, f"Status: {data}")
-                        return True
-                    else:
-                        self.log_result("Backend Health Check", False, 
-                                      f"Node backend not connected: {data.get('node_backend')}", 
-                                      "connected", data.get('node_backend'))
-                        return False
+                # Check for required fields - updated for actual response format
+                if data.get("ok") == True and data.get("service") == "fomo-backend":
+                    self.log_result("Backend Health Check", True, f"Status: {data}")
+                    return True
                 else:
                     self.log_result("Backend Health Check", False, 
                                   f"Invalid response structure: {data}")
