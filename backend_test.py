@@ -44,7 +44,7 @@ class FOMOConnectionsTester:
     def test_backend_health(self):
         """Test Python FastAPI proxy health check"""
         try:
-            response = requests.get(f"{self.backend_url}/health", timeout=10)
+            response = requests.get(f"{self.backend_url}/api/health", timeout=10)
             
             if response.status_code == 200:
                 data = response.json()
