@@ -335,9 +335,9 @@ export default function SmartFollowersPanel({ accountId }) {
       
       setLoading(true);
       try {
-        // Fetch smart followers data (mock for now)
+        // Fetch smart followers data - use real data
         const res = await fetch(
-          `${BACKEND_URL}/api/connections/smart-followers/${accountId}?mock_count=20`
+          `${BACKEND_URL}/api/connections/smart-followers/${accountId}`
         );
         const json = await res.json();
         
