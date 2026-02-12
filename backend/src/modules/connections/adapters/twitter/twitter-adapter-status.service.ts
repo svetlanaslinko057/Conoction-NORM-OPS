@@ -8,7 +8,7 @@
 import { Db } from 'mongodb';
 import { getConfig, type TwitterAdapterConfigDoc, type AdapterMode } from '../../storage/twitter-adapter-config.store.js';
 import { getAdapterStatus } from './adapter/twitter-adapter.config.js';
-import { checkDataAvailability } from '../../twitter-live/twitterLive.reader.js';
+import { checkDataAvailability } from '../../ports/port-access.js';
 import { getFollowGraphStatus } from './readers/twitterFollow.reader.js';
 
 export interface DataHealthStatus {
