@@ -187,7 +187,7 @@ export default function AltSeasonPage() {
                 <AspIcon size={24} className={aspConfig.text} />
               </div>
               <div className={`text-4xl font-bold ${aspConfig.text} stat-number`}>
-                {altSeason ? `${(altSeason.asp * 100).toFixed(0)}%` : '--'}
+                {altSeason ? `${((altSeason.asp || altSeason.probability || altSeason.altIndex / 100 || 0.5) * 100).toFixed(0)}%` : '--'}
               </div>
               <div className="mt-2">
                 <Badge className={`${aspConfig.text} bg-white/50`}>
