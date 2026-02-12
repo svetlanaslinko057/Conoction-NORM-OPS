@@ -201,6 +201,160 @@ export interface ITwitterParserPort extends PortMetadata {
 }
 
 // ============================================
+// TWITTER LIVE PORT (for real-time Twitter data)
+// ============================================
+export interface ITwitterLivePort extends PortMetadata {
+  name: 'twitter_live';
+  
+  /**
+   * Check data availability for Twitter live features
+   */
+  checkDataAvailability(): Promise<{
+    available: boolean;
+    lastUpdate: Date | null;
+    status: 'READY' | 'STALE' | 'UNAVAILABLE';
+  }>;
+  
+  /**
+   * Get recent mentions for a symbol/token
+   */
+  getRecentMentions(symbol: string, hours?: number): Promise<{
+    mentions: any[];
+    count: number;
+    authors: string[];
+  }>;
+  
+  /**
+   * Get quick diff summary
+   */
+  getQuickDiffSummary(): Promise<{
+    newTweets: number;
+    newAccounts: number;
+    period: string;
+  }>;
+  
+  /**
+   * Stream live events
+   */
+  streamEvents?(): AsyncIterable<any>;
+}
+
+// ============================================
+// ALERT PORT (for sending alerts to host system)
+// ============================================
+export interface AlertPayload {
+  type: string;
+  severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  title: string;
+  message: string;
+  data?: Record<string, any>;
+  timestamp?: Date;
+}
+
+export interface IAlertPort extends PortMetadata {
+  name: 'alert';
+  
+  /**
+   * Send alert to host alert system
+   */
+  sendAlert(payload: AlertPayload): Promise<boolean>;
+  
+  /**
+   * Emit alert candidate for processing
+   */
+  emitAlertCandidate(candidate: {
+    actorId?: string;
+    symbol?: string;
+    type: string;
+    score: number;
+    data: any;
+  }): Promise<void>;
+  
+  /**
+   * Get alert policy status
+   */
+  getPolicyStatus(): Promise<{
+    enabled: boolean;
+    policies: string[];
+  }>;
+}
+
+// ============================================
+// NOTIFICATION PORT (for push notifications)
+// ============================================
+export interface INotificationPort extends PortMetadata {
+  name: 'notification';
+  
+  /**
+   * Push notification to users
+   */
+  pushNotification(data: {
+    userId?: string;
+    chatId?: string;
+    type: string;
+    title: string;
+    body: string;
+    payload?: any;
+  }): Promise<boolean>;
+  
+  /**
+   * Check notification channel status
+   */
+  checkChannel(channel: 'telegram' | 'email' | 'push'): Promise<{
+    available: boolean;
+    configured: boolean;
+  }>;
+}
+
+// ============================================
+// TAXONOMY PORT (for taxonomy data access)
+// ============================================
+export interface ITaxonomyPort extends PortMetadata {
+  name: 'taxonomy';
+  
+  /**
+   * Get taxonomy groups
+   */
+  getGroups(): Promise<{
+    id: string;
+    name: string;
+    type: string;
+    members: string[];
+  }[]>;
+  
+  /**
+   * Get group by ID
+   */
+  getGroup(groupId: string): Promise<any | null>;
+  
+  /**
+   * Get taxonomy constants
+   */
+  getConstants(): Promise<Record<string, any>>;
+}
+
+// ============================================
+// CONFIDENCE PORT (for confidence scoring)
+// ============================================
+export interface IConfidencePort extends PortMetadata {
+  name: 'confidence';
+  
+  /**
+   * Get confidence score for account
+   */
+  getAccountConfidence(actorId: string): Promise<{
+    score: number;
+    factors: Record<string, number>;
+    grade: string;
+  } | null>;
+  
+  /**
+   * Batch get confidence scores
+   */
+  batchGetConfidence(actorIds: string[]): Promise<Map<string, number>>;
+}
+
+// ============================================
 // COMBINED PORTS INTERFACE
 // ============================================
 export interface IConnectionsPorts {
