@@ -97,7 +97,12 @@
 ## P0 (Next Steps):
 1. Добавить Twitter cookies для реального парсинга
 2. Follow Graph с реальными данными
-3. Fix WebSocket connection errors
+3. Fix WebSocket connection errors (низкий приоритет)
+
+## Исправленные задачи:
+- ✅ Исправить отображение "Unknown" данных на странице /connections/unified
+  - Seed данные содержат корректные title, name, handle поля
+  - Все 10 аккаунтов отображаются с правильными именами
 
 ## P1 (Backlog):
 1. Telegram bot интеграция
