@@ -162,7 +162,7 @@ export async function registerSmartFollowersRoutes(app: FastifyInstance): Promis
     const query = req.query as { mock_count?: string; use_mock?: string };
     
     // Try to get real followers from unified_accounts first
-    const db = (app as any).mongo?.db;
+    const db = getMongoDb();
     
     if (db && query.use_mock !== 'true') {
       try {
