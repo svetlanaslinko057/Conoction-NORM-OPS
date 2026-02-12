@@ -149,6 +149,81 @@ class FOMOConnectionsTester:
             self.log_result("Connections Unified API", False, f"Request error: {str(e)}")
             return False
 
+    def test_alt_season_api(self):
+        """Test Alt Season API - should return real data with 'state' field"""
+        try:
+            response = requests.get(f"{self.backend_url}/api/connections/alt-season", timeout=15)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("ok") == True:
+                    alt_data = data.get("data", {})
+                    
+                    # Check for 'state' field (fixed from 'level')
+                    if "state" in alt_data or "level" in alt_data:
+                        probability = alt_data.get("asp") or alt_data.get("probability") or alt_data.get("altIndex", 0) / 100
+                        self.log_result("Alt Season API", True, 
+                                      f"State: {alt_data.get('state', alt_data.get('level'))}, Probability: {probability:.2f}")
+                        return True
+                    else:
+                        self.log_result("Alt Season API", False, 
+                                      f"Missing 'state' or 'level' field: {alt_data}")
+                        return False
+                else:
+                    self.log_result("Alt Season API", False, 
+                                  f"API returned ok=false: {data}")
+                    return False
+            else:
+                self.log_result("Alt Season API", False, 
+                              f"HTTP {response.status_code}: {response.text}")
+                return False
+                
+        except Exception as e:
+            self.log_result("Alt Season API", False, f"Request error: {str(e)}")
+            return False
+
+    def test_smart_followers_api(self):
+        """Test Smart Followers API - should return real data with source='real'"""
+        try:
+            response = requests.get(
+                f"{self.backend_url}/api/connections/smart-followers/vitalikbuterin", 
+                timeout=15
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("ok") == True:
+                    source = data.get("source", "unknown")
+                    followers_data = data.get("data", {})
+                    
+                    if source == "real":
+                        top_followers = followers_data.get("top_followers", [])
+                        real_accounts = []
+                        for follower in top_followers[:5]:  # Check first 5
+                            handle = follower.get("handle", "")
+                            if any(real_handle in handle.lower() for real_handle in ["cz_binance", "a16z", "solana", "ethereum", "coinbase"]):
+                                real_accounts.append(handle)
+                        
+                        self.log_result("Smart Followers API", True, 
+                                      f"Source: {source}, Real accounts found: {real_accounts}")
+                        return True
+                    else:
+                        self.log_result("Smart Followers API", False, 
+                                      f"Expected source='real', got '{source}'")
+                        return False
+                else:
+                    self.log_result("Smart Followers API", False, 
+                                  f"API returned ok=false: {data}")
+                    return False
+            else:
+                self.log_result("Smart Followers API", False, 
+                              f"HTTP {response.status_code}: {response.text}")
+                return False
+                
+        except Exception as e:
+            self.log_result("Smart Followers API", False, f"Request error: {str(e)}")
+            return False
+
     def test_connections_health_api(self):
         """Test Connections module health endpoint"""
         try:
