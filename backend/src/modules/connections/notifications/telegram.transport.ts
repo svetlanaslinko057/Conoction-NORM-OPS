@@ -1,12 +1,12 @@
 /**
  * Connections Telegram Transport
- * Phase 2.3: Uses existing platform telegram.service
+ * Phase 2.3: Uses port-based telegram integration
  * 
  * Uses existing bot token - bot is "dumb receiver", platform is "brain"
- * INTEGRATION: Uses sendTelegramMessage from core/notifications/telegram.service
+ * INTEGRATION: Uses ITelegramPort from ports
  */
 
-import { sendTelegramMessage } from '../../../core/notifications/telegram.service.js';
+import { sendTelegramMessage } from '../ports/port-access.js';
 
 export interface TelegramTransportConfig {
   botToken: string;
@@ -21,21 +21,21 @@ export class TelegramTransport {
 
   /**
    * Send message to Telegram chat/channel
-   * Uses existing platform telegram service for consistency
+   * Uses port for platform telegram service for consistency
    */
   async sendMessage(chatId: string, text: string): Promise<any> {
     if (!chatId) {
       throw new Error('Telegram chat_id is missing');
     }
 
-    // Use existing platform telegram service
-    const result = await sendTelegramMessage(chatId, text, { parseMode: 'HTML' });
+    // Use port-based telegram service
+    const success = await sendTelegramMessage(chatId, text);
     
-    if (!result.ok) {
-      throw new Error(result.error || 'Telegram send failed');
+    if (!success) {
+      throw new Error('Telegram send failed');
     }
     
-    return { ok: true, messageId: result.messageId };
+    return { ok: true };
   }
 
   /**
