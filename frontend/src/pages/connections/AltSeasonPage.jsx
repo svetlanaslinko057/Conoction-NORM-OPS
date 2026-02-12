@@ -130,7 +130,7 @@ export default function AltSeasonPage() {
     fetchData();
   }, [fetchData]);
 
-  const aspConfig = altSeason ? ALT_SEASON_COLORS[altSeason.level] : ALT_SEASON_COLORS.NEUTRAL;
+  const aspConfig = altSeason ? (ALT_SEASON_COLORS[altSeason.state] || ALT_SEASON_COLORS[altSeason.level] || ALT_SEASON_COLORS.NEUTRAL) : ALT_SEASON_COLORS.NEUTRAL;
   const AspIcon = aspConfig.icon;
 
   return (
