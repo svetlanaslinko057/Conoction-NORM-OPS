@@ -530,5 +530,10 @@ export function validatePorts(ports: Partial<IConnectionsPorts> = {}): IConnecti
     price: validatePort(ports.price, 'price'),
     telegram: validatePort(ports.telegram, 'telegram'),
     twitterParser: validatePort(ports.twitterParser, 'twitterParser'),
+    twitterLive: validatePort(ports.twitterLive, 'twitterLive'),
+    alert: validatePort(ports.alert, 'alert'),
+    notification: validatePort(ports.notification, 'notification'),
+    taxonomy: validatePort(ports.taxonomy, 'taxonomy'),
+    confidence: validatePort(ports.confidence, 'confidence'),
   };
 }
