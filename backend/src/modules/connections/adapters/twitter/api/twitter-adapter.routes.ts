@@ -242,9 +242,7 @@ export async function registerTwitterAdapterRoutes(app: FastifyInstance): Promis
 
 import { getMongoDb } from '../../../../../db/mongoose.js';
 import { readAllTwitterData } from '../adapter/twitter-adapter.service.js';
-import { checkDataAvailability } from '../../../twitter-live/twitterLive.reader.js';
-import { getQuickDiffSummary, compareMockVsLive } from '../../../twitter-live/twitterLive.diff.js';
-import { getTwitterAdapterConfidence } from '../../../confidence/confidence.compute.js';
+import { checkDataAvailability, getQuickDiffSummary } from '../../../ports/port-access.js';
 import { getFollowGraphStatus } from '../readers/twitterFollow.reader.js';
 
 export async function registerAdditionalTwitterAdapterRoutes(app: any) {
