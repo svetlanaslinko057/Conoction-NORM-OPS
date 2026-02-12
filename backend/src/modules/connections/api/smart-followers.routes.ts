@@ -154,13 +154,67 @@ export async function registerSmartFollowersRoutes(app: FastifyInstance): Promis
   
   /**
    * GET /api/connections/smart-followers/:account_id
-   * Get smart followers for specific account (with mock data)
+   * Get smart followers for specific account using REAL data from unified_accounts
    */
   app.get('/:account_id', async (req: FastifyRequest, reply: FastifyReply) => {
     const { account_id } = req.params as { account_id: string };
-    const query = req.query as { mock_count?: string };
+    const query = req.query as { mock_count?: string; use_mock?: string };
     
-    // For now, generate mock data. In future, this will fetch real followers
+    // Try to get real followers from unified_accounts first
+    const db = (app as any).mongo?.db;
+    
+    if (db && query.use_mock !== 'true') {
+      try {
+        // Get all unified accounts sorted by authority (these are potential "followers")
+        const unifiedAccounts = await db.collection('connections_unified_accounts')
+          .find({})
+          .sort({ authority: -1 })
+          .limit(50)
+          .toArray();
+        
+        if (unifiedAccounts && unifiedAccounts.length > 0) {
+          // Transform unified accounts to followers format
+          const realFollowers = unifiedAccounts.map((acc: any, idx: number) => ({
+            follower_id: acc.id || acc.handle?.replace('@', '') || `follower_${idx}`,
+            authority_score_0_1: Math.min(1, (acc.authority || 50) / 100),
+            tier_multiplier: 1.0,
+            handle: acc.handle || `@${acc.id}`,
+            label: acc.title || acc.displayName || acc.id,
+            avatar: acc.avatar,
+            followers: acc.followers || 0,
+          }));
+          
+          const realInput: SmartFollowersInput = {
+            account_id,
+            followers: realFollowers,
+          };
+          
+          const result = computeSmartFollowers(realInput);
+          
+          // Enrich top_followers with real data
+          result.top_followers = result.top_followers.map((f: any) => {
+            const original = realFollowers.find((rf: any) => rf.follower_id === f.follower_id);
+            return {
+              ...f,
+              handle: original?.handle || f.handle,
+              label: original?.label || f.label,
+              avatar: original?.avatar,
+              followers: original?.followers,
+            };
+          });
+          
+          return reply.send({
+            ok: true,
+            source: 'real',
+            data: result,
+          });
+        }
+      } catch (err) {
+        console.error('[SmartFollowers] Error fetching real data:', err);
+      }
+    }
+    
+    // Fallback to mock data
     const count = Math.min(parseInt(query.mock_count || '20'), 50);
     const mockInput = generateMockFollowers(count);
     mockInput.account_id = account_id;
