@@ -304,6 +304,12 @@ class FOMOConnectionsTester:
         print("\n6. Testing Connections Unified API...")
         unified_ok = self.test_connections_unified_api()
         
+        print("\n7. Testing Alt Season API...")
+        alt_season_ok = self.test_alt_season_api()
+        
+        print("\n8. Testing Smart Followers API...")
+        smart_followers_ok = self.test_smart_followers_api()
+        
         # Summary
         print("\n" + "=" * 50)
         print(f"📊 Test Results: {self.tests_passed}/{self.tests_run} passed")
