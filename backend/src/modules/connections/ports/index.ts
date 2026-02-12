@@ -364,6 +364,11 @@ export interface IConnectionsPorts {
   price: IPricePort;
   telegram?: ITelegramPort;
   twitterParser?: ITwitterParserPort;
+  twitterLive?: ITwitterLivePort;
+  alert?: IAlertPort;
+  notification?: INotificationPort;
+  taxonomy?: ITaxonomyPort;
+  confidence?: IConfidencePort;
 }
 
 // ============================================
