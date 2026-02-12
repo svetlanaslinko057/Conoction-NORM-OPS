@@ -425,6 +425,70 @@ export const nullTwitterParserPort: ITwitterParserPort = {
   getFollowerEdges: async () => [],
 };
 
+export const nullTwitterLivePort: ITwitterLivePort = {
+  version: PORTS_VERSION,
+  name: 'twitter_live',
+  checkDataAvailability: async () => ({
+    available: false,
+    lastUpdate: null,
+    status: 'UNAVAILABLE' as const,
+  }),
+  getRecentMentions: async () => ({
+    mentions: [],
+    count: 0,
+    authors: [],
+  }),
+  getQuickDiffSummary: async () => ({
+    newTweets: 0,
+    newAccounts: 0,
+    period: '24h',
+  }),
+};
+
+export const nullAlertPort: IAlertPort = {
+  version: PORTS_VERSION,
+  name: 'alert',
+  sendAlert: async () => {
+    console.warn('[Connections] Alert port not configured, alert not sent');
+    return false;
+  },
+  emitAlertCandidate: async () => {
+    console.warn('[Connections] Alert port not configured, candidate not emitted');
+  },
+  getPolicyStatus: async () => ({
+    enabled: false,
+    policies: [],
+  }),
+};
+
+export const nullNotificationPort: INotificationPort = {
+  version: PORTS_VERSION,
+  name: 'notification',
+  pushNotification: async () => {
+    console.warn('[Connections] Notification port not configured');
+    return false;
+  },
+  checkChannel: async () => ({
+    available: false,
+    configured: false,
+  }),
+};
+
+export const nullTaxonomyPort: ITaxonomyPort = {
+  version: PORTS_VERSION,
+  name: 'taxonomy',
+  getGroups: async () => [],
+  getGroup: async () => null,
+  getConstants: async () => ({}),
+};
+
+export const nullConfidencePort: IConfidencePort = {
+  version: PORTS_VERSION,
+  name: 'confidence',
+  getAccountConfidence: async () => null,
+  batchGetConfidence: async () => new Map(),
+};
+
 export const nullPorts: IConnectionsPorts = {
   exchange: nullExchangePort,
   onchain: nullOnchainPort,
@@ -432,6 +496,11 @@ export const nullPorts: IConnectionsPorts = {
   price: nullPricePort,
   telegram: nullTelegramPort,
   twitterParser: nullTwitterParserPort,
+  twitterLive: nullTwitterLivePort,
+  alert: nullAlertPort,
+  notification: nullNotificationPort,
+  taxonomy: nullTaxonomyPort,
+  confidence: nullConfidencePort,
 };
 
 // ============================================
