@@ -2,11 +2,28 @@
  * Twitter Alert Bridge Service
  * 
  * Transforms twitter-derived signals into alert candidates.
- * Does NOT send alerts directly - passes to policy engine.
+ * Does NOT send alerts directly - passes to policy engine via port.
  */
 
 import { Db } from 'mongodb';
-import type { AlertCandidate, AlertSource } from '../../../alerts/alert-policy.engine.js';
+import { emitAlertCandidate } from '../../ports/port-access.js';
+
+// Local type definitions (decoupled from host alerts module)
+export type AlertSource = 'twitter' | 'onchain' | 'exchange' | 'sentiment' | 'system';
+
+export interface AlertCandidate {
+  id: string;
+  account_id?: string;
+  symbol?: string;
+  signal_type: string;
+  source: AlertSource;
+  confidence: number;
+  severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  headline: string;
+  details?: string;
+  metrics?: Record<string, any>;
+  detected_at: Date;
+}
 
 export interface TwitterSignal {
   author_id: string;
