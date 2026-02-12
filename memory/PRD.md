@@ -1,61 +1,45 @@
 # FOMO Connections Module - PRD
 
-## Версия: 3.0.0 (Mobile Responsive Fixed)
+## Версия: 3.1.0 (Deployed)
 ## Дата: 2026-02-12
 
 ---
 
-## Статус: МОБИЛЬНЫЙ АДАПТИВ ПОЛНОСТЬЮ ЗАВЕРШЕН ✓ (v3)
+## Статус: ПРОЕКТ РАЗВЕРНУТ ✓
 
 ### Архитектура сервисов:
 
 | Сервис | Порт | Статус |
 |--------|------|--------|
-| Frontend React | 3000 | RUNNING |
-| Python FastAPI Proxy | 8001 | RUNNING |
-| Node.js Fastify Backend | 8003 | RUNNING |
-| MongoDB | 27017 | RUNNING |
-| Twitter Parser V2 | 5001 | RUNNING |
+| Frontend React | 3000 | ✅ RUNNING |
+| Python FastAPI Proxy | 8001 | ✅ RUNNING |
+| Node.js Fastify Backend | 8003 | ✅ RUNNING |
+| MongoDB | 27017 | ✅ RUNNING |
+| Twitter Parser V2 | 5001 | ✅ RUNNING |
 
 ---
 
-## Мобильный адаптив v3 (2026-02-12):
+## Что реализовано:
 
-### Базовый viewport: iPhone 12 Pro (390x844px)
+### 1. Connections Module
+- ✅ Influencers страница с карточками (10 influencers)
+- ✅ Graph страница для поиска связей
+- ✅ Radar страница для early signals
+- ✅ Clusters, Backers, Reality страницы
+- ✅ Мобильный адаптив (hamburger menu, горизонтальный скролл)
 
-### Sidebar
-- ✅ Скрыт по умолчанию на мобильных (< 1024px)
-- ✅ Hamburger menu button в левом верхнем углу
-- ✅ Slide-in drawer с overlay
-- ✅ Закрытие по клику на overlay или X
-- ✅ Автоматическое закрытие при навигации
+### 2. Twitter Parser V2
+- ✅ Playwright-based парсер на порту 5001
+- ✅ MULTI architecture (cookies + proxy через body)
+- ✅ Поддержка search, tweets, profile, following, followers
+- ✅ Mongo Task Queue для batch операций
+- ✅ Warmth ping для проверки сессий
 
-### TopBar
-- ✅ Мобильная иконка поиска вместо полноширинного поля
-- ✅ Компактная кнопка Connect (только иконка на мобильных)
-- ✅ Иконки watchlist, notifications справа
-
-### Протестированные страницы (100% success):
-- ✅ `/connections/influencers` - карточки, фильтры, навигация
-- ✅ `/connections/clusters` - заголовок, кнопки, карточки кластеров
-- ✅ `/connections/lifecycle` - табы, статистика, информационные блоки
-- ✅ `/connections/graph` - заголовок, поиск, граф
-- ✅ `/connections/alt-season` - статистика, карточки
-- ✅ `/connections/radar` - фильтры, график, список аккаунтов (stacked layout)
-- ✅ `/connections/narratives` - статистика, табы
-- ✅ `/connections/reality` - 2-column stats grid
-- ✅ `/connections/backers` - фильтры, поиск
-
-### CSS стили (connections-mobile.css v3)
-- ✅ Горизонтальный скролл для навигационных табов
-- ✅ Горизонтальный скролл для фильтров групп
-- ✅ overflow-x: hidden на body - нет горизонтального скролла страницы
-- ✅ Скрытие scrollbar через CSS
-- ✅ 2x2 сетка для статистики
-- ✅ Stacked layout для двухколоночных страниц (grid-cols-1 lg:grid-cols-2)
-- ✅ Touch-friendly кнопки (min 44px)
-- ✅ Safe area support (iPhone notch)
-- ✅ Dark mode адаптация
+### 3. Backend Infrastructure
+- ✅ FastAPI proxy (server.py) → Node.js backend
+- ✅ Fastify с 100+ API routes
+- ✅ WebSocket support
+- ✅ MongoDB с seed данными
 
 ---
 
@@ -63,82 +47,82 @@
 
 | Коллекция | Записей |
 |-----------|---------|
-| connections_author_profiles | 10 |
 | connections_unified_accounts | 10 |
-| connections_follow_graph | 30 edges |
-| connections_asset_lifecycle | 8 assets |
-| connections_cluster_lifecycle | 6 clusters |
-| influencer_clusters | 3 |
-| cluster_token_momentum | 5 tokens |
-| connections_early_rotations | 2 |
+| twitter_egress_slots | 1 |
+| proxy_slots | 1 |
 
 ### Influencers:
-- @vitalikbuterin (S-tier, 5.8M)
-- @cz_binance (S-tier, 9.2M)
-- @a16z (S-tier, 1.2M)
-- @paradigm (S-tier, 380K)
-- @cobie (A-tier, 920K)
-- @raoulpal (A-tier, 1.1M)
-- @lookonchain (A-tier, 650K)
-- @hsaka (B-tier, 280K)
-- @pentoshi (A-tier, 720K)
-- @brian_armstrong (S-tier, 1.4M)
+- @vitalikbuterin (Ethereum co-founder, 5.8M followers)
+- @cz_binance (Former Binance CEO, 9.2M followers)
+- @a16z (a16z crypto, 1.2M followers)
+- @paradigm (Research-driven VC, 380K followers)
+- @cobie (Trader/Analyst, 920K followers)
+- @raoulpal (Macro Investor, 1.1M followers)
+- @lookonchain (On-chain analytics, 650K followers)
+- @hsaka (Trader/NFT, 280K followers)
+- @pentoshi (Charts/Trading, 720K followers)
+- @brian_armstrong (Coinbase CEO, 1.4M followers)
 
 ---
 
-## Тестирование (iteration_4):
+## Тестирование:
 
-- Mobile Responsive: 100% ✓
-- Pages Tested: 9/9 ✓
-- Hamburger Menu: ✓
-- Horizontal Scroll Tabs: ✓
-- No Page Overflow: ✓
-- Overall Frontend: 100% ✓
-
----
-
-## Исправленные баги:
-
-### v3 (2026-02-12)
-1. ConnectionsInfluencersPage - навигационные табы с горизонтальным скроллом
-2. ConnectionsInfluencersPage - адаптивные фильтры групп
-3. ClusterAttentionPage - адаптивный заголовок и кнопки
-4. LifecyclePage - адаптивные табы с горизонтальным скроллом
-5. ConnectionsEarlySignalPage (Radar) - grid-cols-1 lg:grid-cols-2 вместо grid-cols-2
-6. TopBar - мобильная иконка поиска вместо полноширинного поля
-7. connections-mobile.css - полностью переписан для iPhone 12 Pro
-
-### v2 (предыдущий)
-1. LifecyclePage - "Icon is not defined"
-2. ConnectionsEarlySignalPage - "HelpCircle/Info is not defined"
-3. AltSeasonPage - icon format fix
-4. Sidebar visibility на мобильных
-
----
-
-## P1 (Next Steps):
-1. ✅ DONE - Мобильная адаптивность
-2. ✅ DONE - Исправить "Unknown" данные на странице /connections/unified
-3. Загрузить Twitter cookies для парсинга
-4. Follow Graph с реальными данными
-
-## P2 (Backlog):
-1. WebSocket real-time updates
-2. Telegram bot интеграция
-3. Infinite scroll для списков
-4. Полный аудит иконок FomoIcons на всех страницах
+- Backend: 100% (6/6 tests passed)
+- Frontend: 95% (minor WebSocket issues)
+- Mobile Responsive: ✅ Working
+- Services Health: ✅ All running
 
 ---
 
 ## Ключевые файлы:
 
-- `/app/frontend/src/styles/connections-mobile.css` - мобильные стили v3
-- `/app/frontend/src/layout/AppLayout.jsx` - основной layout
-- `/app/frontend/src/layout/TopBar.jsx` - верхняя панель с мобильным поиском
-- `/app/frontend/src/components/Sidebar.jsx` - боковое меню с hamburger
-- `/app/frontend/src/pages/connections/*` - страницы модуля Connections
+### Backend
+- `/app/backend/server.py` - Python FastAPI proxy
+- `/app/backend/src/app.ts` - Fastify app builder
+- `/app/backend/src/modules/connections/` - Connections module
+- `/app/backend/src/modules/twitter-user/` - Twitter integration
+
+### Frontend
+- `/app/frontend/src/pages/connections/` - Connections pages
+- `/app/frontend/src/components/connections/` - Connections components
+- `/app/frontend/src/api/connections.api.js` - API hooks
+
+### Twitter Parser
+- `/app/twitter-parser-v2/src/server.ts` - Parser server
+- `/app/twitter-parser-v2/src/browser/` - Browser management
+- `/app/twitter-parser-v2/src/queue/` - Task queue
+
+---
+
+## P0 (Next Steps):
+1. Добавить Twitter cookies для реального парсинга
+2. Follow Graph с реальными данными
+3. Fix WebSocket connection errors
+
+## P1 (Backlog):
+1. Telegram bot интеграция
+2. WebSocket real-time updates
+3. Infinite scroll для списков
+
+---
+
+## ENV Variables:
+
+```env
+# Backend
+MONGO_URL=mongodb://localhost:27017
+MONGODB_URI=mongodb://localhost:27017/connections_db
+DB_NAME=connections_db
+PORT=8003
+PARSER_URL=http://localhost:5001
+TELEGRAM_BOT_TOKEN=...
+COOKIE_ENC_KEY=...
+WEBHOOK_API_KEY=...
+MINIMAL_BOOT=1
+CONNECTIONS_MODULE_ENABLED=true
+```
 
 ---
 
 Last Updated: 2026-02-12
-Testing Report: /app/test_reports/iteration_4.json
+Testing Report: /app/test_reports/iteration_1.json
